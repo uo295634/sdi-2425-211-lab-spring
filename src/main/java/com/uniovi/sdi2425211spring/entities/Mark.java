@@ -1,8 +1,6 @@
 package com.uniovi.sdi2425211spring.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Mark {
@@ -12,12 +10,22 @@ public class Mark {
     private String description;
     private Double score;
 
+    @ManyToOne
+    @JoinColumn(name = "user id")
+    private User user;
 
     public Mark() { }
     public Mark(Long id, String description, Double score) {
         this.id = id;
         this.description = description;
         this.score = score;
+    }
+
+    public Mark(String description, Double score, User user) {
+        super();
+        this.description = description;
+        this.score = score;
+        this.user = user;
     }
     @Override
     public String toString() {
@@ -43,4 +51,10 @@ public class Mark {
     public void setScore(Double score) {
         this.score = score;
     }
+public User getUser() {
+        return user;
+}
+public void setUser(User user) {
+        this.user = user;
+}
 }
