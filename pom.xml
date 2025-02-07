@@ -12,8 +12,8 @@
     <artifactId>sdi-2425-211-spring</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>sdi-2425-101-spring</name>
-    <description>sdi-2425-101-spring</description>
+    <name>sdi-2425-211-spring</name>
+    <description>sdi-2425-211-spring</description>
     <url/>
     <licenses>
         <license/>
