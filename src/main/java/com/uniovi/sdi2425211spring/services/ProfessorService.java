@@ -2,7 +2,7 @@ package com.uniovi.sdi2425211spring.services;
 
 
 import com.uniovi.sdi2425211spring.entities.Professor;
-import jakarta.annotation.PostConstruct;
+import javax.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -32,10 +32,11 @@ public class ProfessorService {
 
     public void addProfessor(Professor professor) {
         if (professor.getId() == null) {
-            professor.setId(professorList.getLast().getId() + 1);
+            professor.setId(professorList.get(professorList.size() - 1).getId() + 1);
         }
         professorList.add(professor);
     }
+
 
 
 }
