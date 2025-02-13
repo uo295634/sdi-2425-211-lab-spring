@@ -3,6 +3,9 @@ package com.uniovi.sdi2425211spring.services;
 
 import com.uniovi.sdi2425211spring.entities.Professor;
 import javax.annotation.PostConstruct;
+
+import com.uniovi.sdi2425211spring.entities.User;
+import com.uniovi.sdi2425211spring.repositories.ProfessorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -11,6 +14,11 @@ import java.util.List;
 @Service
 public class ProfessorService {
     private final List<Professor> professorList = new LinkedList<>();
+    private final ProfessorRepository professorRepository;
+
+    public ProfessorService(ProfessorRepository professorRepository) {
+        this.professorRepository = professorRepository;
+    }
 
     @PostConstruct
     public void init() {
@@ -36,6 +44,10 @@ public class ProfessorService {
         }
         professorList.add(professor);
     }
+    public Professor getProfessorByDni(String dni) {
+        return professorRepository.findByDni(dni);
+    }
+
 
 
 
