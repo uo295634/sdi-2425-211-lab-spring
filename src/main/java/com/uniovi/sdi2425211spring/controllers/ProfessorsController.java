@@ -3,6 +3,7 @@ package com.uniovi.sdi2425211spring.controllers;
 import com.uniovi.sdi2425211spring.entities.Professor;
 import com.uniovi.sdi2425211spring.services.MarksService;
 import com.uniovi.sdi2425211spring.services.ProfessorService;
+import com.uniovi.sdi2425211spring.validators.AddProfessorValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,8 +12,13 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class ProfessorsController {
+    private final AddProfessorValidator addProfessorValidator;
     @Autowired //Inyectar el servicio
     private ProfessorService professorService;
+
+    public ProfessorsController(AddProfessorValidator addProfessorValidator) {
+        this.addProfessorValidator = addProfessorValidator;
+    }
 
     @RequestMapping(value = "/professor/add")
     public String setProfessor() {
