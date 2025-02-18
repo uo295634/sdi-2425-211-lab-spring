@@ -1,5 +1,6 @@
 package com.uniovi.sdi2425211spring.controllers;
 
+import com.uniovi.sdi2425211spring.services.RolesService;
 import com.uniovi.sdi2425211spring.services.SecurityService;
 import com.uniovi.sdi2425211spring.validators.SignUpFormValidator;
 import org.springframework.beans.factory.annotation.*;
@@ -16,12 +17,14 @@ import com.uniovi.sdi2425211spring.services.UsersService;
 public class UsersController {
     private final UsersService usersService;
     private final SecurityService securityService;
+    private final RolesService rolesService;
 
     private final SignUpFormValidator signUpFormValidator;
 
-    public UsersController(UsersService usersService, SecurityService securityService, SignUpFormValidator signUpFormValidator) {
+    public UsersController(UsersService usersService, SecurityService securityService, RolesService rolesService, SignUpFormValidator signUpFormValidator) {
         this.usersService = usersService;
         this.securityService = securityService;
+        this.rolesService = rolesService;
         this.signUpFormValidator = signUpFormValidator;
     }
     @RequestMapping("/user/list")
@@ -31,9 +34,10 @@ public class UsersController {
     }
     @RequestMapping(value = "/user/add")
     public String getUser(Model model) {
-        model.addAttribute("usersList", usersService.getUsers());
+        model.addAttribute("rolesList", rolesService.getRoles());
         return "user/add";
     }
+
     @RequestMapping(value = "/user/add", method = RequestMethod.POST)
     public String setUser(@ModelAttribute User user) {
         usersService.addUser(user);
@@ -85,10 +89,12 @@ public class UsersController {
         if (result.hasErrors()) {
             return "signup";
         }
+        user.setRole(rolesService.getRoles()[0]);
         usersService.addUser(user);
         securityService.autoLogin(user.getDni(), user.getPasswordConfirm());
         return "redirect:home";
     }
+
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
         return "login";
