@@ -11,6 +11,7 @@ public class Mark {
     private Long id;
     private String description;
     private Double score;
+    private Boolean resend = false;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -65,5 +66,11 @@ public void setUser(User user) {
         if (o == null || getClass() != o.getClass()) return false;
         Mark mark = (Mark) o;
         return Objects.equals(id, mark.id);
+    }
+    public Boolean getResend() {
+        return resend;
+    }
+    public void setResend(Boolean resend) {
+        this.resend = resend;
     }
 }
