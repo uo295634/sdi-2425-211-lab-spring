@@ -1,6 +1,14 @@
 package com.uniovi.sdi2425211spring.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Professor {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String dni;
@@ -16,6 +24,10 @@ public class Professor {
         this.name = firstName;
         this.surname = surname;
         this.category = category;
+    }
+
+    public Professor() {
+
     }
 
     public Long getId() {
