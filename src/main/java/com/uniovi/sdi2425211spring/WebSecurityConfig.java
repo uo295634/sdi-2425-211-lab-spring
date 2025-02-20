@@ -30,8 +30,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/mark/add").hasAuthority("ROLE_PROFESSOR")
                 .antMatchers("/mark/edit/*").hasAuthority("ROLE_PROFESSOR")
                 .antMatchers("/mark/delete/*").hasAuthority("ROLE_PROFESSOR")
+                .antMatchers("/professor/add").hasAuthority("ADMIN")
+                .antMatchers("/professor/delete/*").hasAuthority("ADMIN")
+                .antMatchers("/professor/edit/*").hasAuthority("ADMIN")
+                .antMatchers("/professor/details").hasAnyAuthority("ADMIN", "ROLE_PROFESSOR")
                 .antMatchers("/mark/**").hasAnyAuthority("ROLE_STUDENT", "ROLE_PROFESSOR", "ROLE_ADMIN")
                 .antMatchers("/user/**").hasAnyRole("ADMIN")
+                .antMatchers("/professor/add", "/professor/edit/*", "/professor/delete/*").hasAuthority("ROLE_ADMIN")  // ADMIN puede agregar, editar y eliminar
+                .antMatchers("/professor/details").hasAnyAuthority("ROLE_ADMIN", "ROLE_PROFESSOR")  // El admin y el profesor pueden ver los detalles del profesor
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
