@@ -1,9 +1,12 @@
 package com.uniovi.sdi2425211spring.controllers;
 
+import com.uniovi.sdi2425211spring.services.MarksService;
 import com.uniovi.sdi2425211spring.services.RolesService;
 import com.uniovi.sdi2425211spring.services.SecurityService;
 import com.uniovi.sdi2425211spring.validators.SignUpFormValidator;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -13,6 +16,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.uniovi.sdi2425211spring.entities.*;
 import com.uniovi.sdi2425211spring.services.UsersService;
+
+import java.security.Principal;
+
 @Controller
 public class UsersController {
     private final UsersService usersService;
@@ -20,12 +26,14 @@ public class UsersController {
     private final RolesService rolesService;
 
     private final SignUpFormValidator signUpFormValidator;
+    private final MarksService marksService;
 
-    public UsersController(UsersService usersService, SecurityService securityService, RolesService rolesService, SignUpFormValidator signUpFormValidator) {
+    public UsersController(UsersService usersService, SecurityService securityService, RolesService rolesService, SignUpFormValidator signUpFormValidator, MarksService marksService) {
         this.usersService = usersService;
         this.securityService = securityService;
         this.rolesService = rolesService;
         this.signUpFormValidator = signUpFormValidator;
+        this.marksService = marksService;
     }
     @RequestMapping("/user/list")
     public String getListado(Model model) {
@@ -99,14 +107,18 @@ public class UsersController {
     public String login() {
         return "login";
     }
+
     @RequestMapping(value = {"/home"}, method = RequestMethod.GET)
-    public String home(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String dni = auth.getName();
-        User activeUser = usersService.getUserByDni(dni);
-        model.addAttribute("markList", activeUser.getMarks());
-        return "home";
+    public String home(Model model, Pageable pageable, Principal principal) {
+        String dni = principal.getName(); // DNI es el name de la autenticación
+        User user = usersService.getUserByDni(dni);
+        Page<Mark> marks;
+        marks = marksService.getMarksForUser(pageable,user);
+        model.addAttribute("markList", marks.getContent());
+        model.addAttribute("page", marks);
+        return "mark/list";
     }
+
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String signup(Model model) {
         model.addAttribute("user", new User());
