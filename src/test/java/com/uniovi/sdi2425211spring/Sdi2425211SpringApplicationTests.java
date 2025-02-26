@@ -1,10 +1,15 @@
 package com.uniovi.sdi2425211spring;
 
+import com.uniovi.sdi2425211spring.pageobjects.PO_HomeView;
+import com.uniovi.sdi2425211spring.pageobjects.PO_Properties;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -45,32 +50,44 @@ class Sdi2425211SpringApplicationTests {
         //Cerramos el navegador al finalizar las pruebas
         driver.quit();
     }
-    @Test
-    @Order(1)
-    void PR01() {
-    }
+ @Test
+ @Order(1)
+ void PR01A() {
+  PO_HomeView.checkWelcomeToPage(driver, PO_Properties.getSPANISH());
+ }
+ @Test
+ @Order(2)
+ void PR01B() {
+  List<WebElement> welcomeMessageElement = PO_HomeView.getWelcomeMessageText(driver,
+          PO_Properties.getSPANISH());
+  Assertions.assertEquals(welcomeMessageElement.get(0).getText(),
+          PO_HomeView.getP().getString("welcome.message", PO_Properties.getSPANISH()));
+ }
 
-    @Test
-    @Order(2)
-    void PR02() {
-    }
+ //PR02. Opción de navegación. Pinchar en el enlace Registro en la página home
+ @Test
+ @Order(3)
+ public void PR02() {
+  PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
+ }
+ //PR03. Opción de navegación. Pinchar en el enlace Identifícate en la página home
+ @Test
+ @Order(4)
+ public void PR03() {
+  PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+ }
 
-    @Test
-    @Order(3)
-    void PR03() {
-    }
 
-    @Test
-    @Order(4)
-    void PR04() {
-    }
+ //PR04. Opción de navegación. Cambio de idioma de Español a Inglés y vuelta a Español
+ @Test
+ @Order(5)
+ public void PR04() {
+  PO_HomeView.checkChangeLanguage(driver, "btnSpanish", "btnEnglish",
+          PO_Properties.getSPANISH(), PO_Properties.getENGLISH());
+ }
 
-    @Test
-    @Order(5)
-    void PR05() {
-    }
 
-    @Test
+ @Test
     @Order(6)
     void PR06() {
     }
