@@ -46,4 +46,13 @@ public class PO_NavView extends PO_View{
         Selectedlanguage.get(0).click();
     }
 
+    public static void accessSection(WebDriver driver, String xPathNavSection, String xPathConcreteSection) {
+        List<WebElement> elements = PO_View.checkElementBy(driver, "free",
+                xPathNavSection);
+        elements.get(0).click();
+        //Esperamos a que aparezca la opción: //a[contains(@href, 'mark/add')]
+        elements = PO_View.checkElementBy(driver, "free", xPathConcreteSection);
+        //Pinchamos en xPathConcreteSection.
+        elements.get(0).click();
+    }
 }
